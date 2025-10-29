@@ -3,12 +3,21 @@ package hello.core.common;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+/*
+    `proxyMode = ScopedProxyMode.TARGET_CLASS`
+      - 적용대상이 인터페이스가 아닌 클래스면 `TARGET_CLASS` 선택
+      - 적용대상이 인터페이스면 `INTERFACES` 선택
+
+     => 이렇게 하면 MyLogger의 가짜 프록시 클래스를 만들어두고 HTTP request와 상관없이 가짜 프록시 클래스를 다른 빈에 미리 주입해 둘 수 있다.
+ */
+
 @Component
-@Scope(value = "request")   // 해당 빈은 HTTP 요청당 하나씩 생성되고, HTTP 요청이 끝나는 시점에 소멸
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)   // 해당 빈은 HTTP 요청당 하나씩 생성되고, HTTP 요청이 끝나는 시점에 소멸
 public class MyLogger {
 
     private String uuid;
