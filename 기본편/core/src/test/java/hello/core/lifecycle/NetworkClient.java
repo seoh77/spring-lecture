@@ -1,5 +1,7 @@
 package hello.core.lifecycle;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -43,13 +45,24 @@ public class NetworkClient {
         System.out.println("close: " + url);
     }
 
-    public void init() throws Exception {
+    /*
+        @PostConstruct, @PreDestroy 애노테이션 특징
+        - 최신 스프링에서 가장 권장하는 방법
+        - 스프링에 종속적인 기술이 아니라 자바 표준이므로, 스프링이 아닌 다른 컨테이너에서도 동작한다.
+        - 컴포넌트 스캔과 잘 어울린다.
+        - 하지만 외부 라이브러리에는 적용하지 못한다.
+          -> 외부 라이브러리를 초기화, 종료 해야 하면 @Bean의 기능을 사용
+     */
+
+    @PostConstruct
+    public void init() {
         System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
 
-    public void close() throws Exception {
+    @PreDestroy
+    public void close() {
         System.out.println("NetworkClient.close");
         disconnect();
     }
