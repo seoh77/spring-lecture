@@ -4,13 +4,9 @@ import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,9 +36,59 @@ public class BasicItemController {
         return "basic/addForm";
     }
 
+//    @PostMapping("/add")
+    public String addItemV1(@RequestParam String itemName,
+                            @RequestParam int price,
+                            @RequestParam Integer quantity,
+                            Model model) {
+
+        Item item = new Item();
+        item.setItemName(itemName);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+
+        itemRepository.save(item);
+
+        model.addAttribute("item", item);
+
+        return "basic/item";
+    }
+
+//    @PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item) {
+
+        /*
+            @ModelAttribute 기능1. 요청 파라미터 처리
+            - `@ModelAttribute`는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법으로 입력해준다.
+
+            @ModelAttribute 기능2. Model 추가
+            - `@ModelAttribute`는 모델(Model)에 `@ModelAttribute`로 지정한 객체를 자동으로 넣어준다.
+            - 따라서 `model.addAttribute("item", item)` 생략 가능
+            - 모델에 데이터를 담을 때는 이름이 필요한데, 이름은 `@ModelAttribute`에 지정한 `name(value)` 속성을 사용한다.
+         */
+
+        itemRepository.save(item);
+//        model.addAttribute("item", item);     // 자동 추가, 생략 가능
+
+        return "basic/item";
+    }
+
+//    @PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item) {
+
+        /*
+            @ModelAttribute의 name은 생략 가능하다.
+            생략시 model에 저장되는 name은 클래스명 첫글자인 소문자로 등록 Item -> item
+         */
+
+        itemRepository.save(item);
+        return "basic/item";
+    }
+
     @PostMapping("/add")
-    public String save() {
-        return "basic/addForm";
+    public String addItemV4(Item item) {        // @ModelAttribute 자체도 생략 가능하다. 대상 객체는 모델에 자동 등록된다.
+        itemRepository.save(item);
+        return "basic/item";
     }
 
     /**
