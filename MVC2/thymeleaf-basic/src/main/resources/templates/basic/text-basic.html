@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>컨텐츠에 데이터 출력하기</h1>
+<ul>
+    <!-- HTML의 콘텐츠에 데이터를 출력할 때는 아래와 같이 th:text를 사용 -->
+    <li>th:text 사용 <spna th:text="${data}"></spna></li>
+
+    <!-- HTML 태그의 속성이 아니라 HTML 콘텐츠 영역 안에서 직접 데이터를 출력하고 싶으면 아래와 같이 [[...]] 사용 -->
+    <li>컨텐츠 안에서 직접 출력하기 = [[${data}]]</li>
+</ul>
+
+</body>
+</html>
