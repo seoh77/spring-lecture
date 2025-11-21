@@ -40,6 +40,21 @@
 
         <hr class="my-4">
 
+        <!-- single checkbox -->
+        <!--
+        HTML checkbox는 선택이 안되면 클라이언트에서 서버로 값 자체를 보내지 않는다. 수정의 경우 상황에 따라 이 방식이 문제가 될 수 있다. (`item.open=null`)
+        이런 문제를 해결하기 위해서 스프링 MVC는 약간의 트릭을 사용하는데, 히든 필드를 하나 만들어서. `_open`처럼 기존 체크박스 이름 앞에 언더스코어(_)를 붙여서 전송하면 체크를 해제했다고 인식할 수 있다.
+        히든 필드는 항상 전송된다. 따라서 체크를 해제한 경우 여기에서 open은 전송되지 않고, _open만 전송되는데, 이 경우 스프링 MVC는 체크를 해제했다고 판단한다. (이때는 `item.open=false` 로 표시됨)
+        -->
+        <div>판매 여부</div>
+        <div>
+            <div class="form-check">
+                <input type="checkbox" id="open" name="open" class="form-check-input">
+                <input type="hidden" name="_open" value="on" /> <!-- 히든 필드 추가 -->
+                <label for="open" class="form-check-label">판매 오픈</label>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등록</button>
